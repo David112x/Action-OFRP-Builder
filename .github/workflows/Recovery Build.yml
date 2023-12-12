@@ -10,19 +10,19 @@ on:
       MANIFEST_BRANCH:
         description: 'MANIFEST_BRANCH'
         required: true
-        default: '11.0'
+        default: '12.1'
       DEVICE_TREE_URL:
         description: 'DEVICE_TREE_URL'
         required: true
-        default: 'https://github.com/OrangeFoxRecovery/device_xiaomi_garden'
+        default: 'https://github.com/sunscape-stuff/android_device_xiaomi_surya_twrp'
       DEVICE_TREE_BRANCH:
         description: 'DEVICE_TREE_BRANCH'
         required: true
-        default: 'fox_11.0_Q'
+        default: 'fox-12.1'
       DEVICE_PATH:
         description: 'DEVICE_PATH'
         required: true
-        default: 'device/xiaomi/garden'
+        default: 'device/xiaomi/surya'
       COMMON_TREE_URL:
         description: 'COMMON_TREE_URL (if no common tree, leave blank)'
         required: false
@@ -32,11 +32,11 @@ on:
       DEVICE_NAME:
         description: 'DEVICE_NAME'
         required: true
-        default: 'garden'
+        default: 'surya'
       MAKEFILE_NAME:
         description: 'MAKEFILE_NAME'
         required: true
-        default: 'twrp_garden'
+        default: 'twrp_surya'
       BUILD_TARGET:
         description: 'BUILD_TARGET'
         required: true
@@ -109,6 +109,21 @@ jobs:
         set +e
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
+        export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
+        export FOX_VERSION="R12.1"
+        export OF_MAINTAINER="David112x"
+        export FOX_BUILD_TYPE="Beta"
+        export OF_SCREEN_H=2400
+        export OF_STATUS_H=91
+        export OF_STATUS_INDENT_LEFT=48
+        export OF_STATUS_INDENT_RIGHT=48
+        export OF_HIDE_NOTCH=1
+        export OF_CLOCK_POS=1
+        export LC_ALL="C"
+        export FOX_RECOVERY_SYSTEM_PARTITION="/dev/block/mapper/system"
+        export FOX_RECOVERY_VENDOR_PARTITION="/dev/block/mapper/vendor"
+        export FOX_BUGGED_AOSP_ARB_WORKAROUND="1616300800"
+        export FOX_DELETE_AROMAFM=1
         set -e
         lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && mka adbd ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}

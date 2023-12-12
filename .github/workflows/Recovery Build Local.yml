@@ -1,4 +1,4 @@
-name: Build OrangeFox Recovery on GitHub Actions
+name: Build OrangeFox Recovery on local runner
 
 on:
   workflow_dispatch:
@@ -45,7 +45,7 @@ on:
 jobs:
   build:
     if: github.event.repository.owner.id == github.event.sender.id
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     permissions:
       contents: write
     steps:
